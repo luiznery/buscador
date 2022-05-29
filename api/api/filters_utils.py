@@ -162,4 +162,36 @@ class FilterUtils:
         }
         return query 
 
-    
+    def get_query_by_title_filtred(title, filters=None, fuzziness=1):
+        """
+        Returns a query dictionary for searching by title with.
+            title: string.
+            filters: dictionary with the following structure:
+                {
+                    "<range_fild_name>": (start, end),
+                    "<multiple_options_field_name>": [option1, option2, ...],
+                    ...
+                }
+            fuzziness: int, default 1.
+        """
+        must = [
+            {
+                "match": {
+                    "recipe_title": {
+                        "query": title,
+                        "fuzziness": 1
+                    },
+                }
+            }
+        ]
+        if filters:
+            must = must + FilterUtils.get_filter_queries(filters)
+
+        query = {
+            "query": {
+                "bool": {
+                    "must": must
+                }
+            }
+        }
+        return query

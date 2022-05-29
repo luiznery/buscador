@@ -68,12 +68,26 @@ class RecipesViewSet(viewsets.ViewSet):
                         ingredients=params['ingredients'].split(','),
                         filters=FilterUtils.generate_filters(params)
                     )
+            
+            elif 'title' in params:
+                if 'page' in params:
+                    result = queries.search_by_title(
+                        title=params['title'],
+                        filters=FilterUtils.generate_filters(params),
+                        page=int(params['page'])
+                    )
+                else:
+                    result = queries.search_by_title(
+                        title=params['title'],
+                        filters=FilterUtils.generate_filters(params)
+                    )
 
             else:
                 return Response(
                         {'ValidationError': 'Wrong parameters passed'},
                         status=status.HTTP_400_BAD_REQUEST)
             return Response(result)
+
 
         except Exception as e:
             return Response(

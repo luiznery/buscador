@@ -10,7 +10,7 @@
     - https://www.elastic.co/pt/downloads/past-releases/kibana-7-15-1
 
 
-3. Unzip both files in this directory.
+3. Unzip both files in this directory database/elastic/
 
 4. Run ElasticSearch:
 

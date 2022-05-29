@@ -92,6 +92,29 @@ class ElasticSearchQueries:
         if return_raw:
             return response
         return parse_result(response)
+    
+    def search_by_title(self, title, filters=None, size=12, page=1, return_raw=False):
+        """
+        Search for recipes by title.
+            title: string.
+            size: int, default 10
+                Number of results to return.
+            page: int, default 1.
+            return_raw: bool, default False
+                If true, returns the raw result from elasticsearch.
+        """
+        query = FilterUtils.get_query_by_title_filtred(title, filters)
+        response = self.es.search(
+            index=self.index,
+            body=query,
+            size=size,
+            from_=size*(page-1),
+            _source=self.returning_fields
+        )
+
+        if return_raw:
+            return response
+        return parse_result(response)
 
     def search_by_ingredients(self, ingredients, filters=None, size=12, page=1, return_raw=False):
         """
